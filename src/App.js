@@ -1,25 +1,48 @@
-import logo from './logo.svg';
+import React, { createRef, PureComponent } from 'react';
+import Counter from './Counter';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+class App extends PureComponent {
+
+  state = {
+    isCounterVisible: true,
+  }
+
+  textInput = createRef();
+  paragraphTextContent = createRef();
+
+  render() {
+
+    const counterElement = this.state.isCounterVisible ? <Counter /> : null;
+
+    console.log(this.textInput);
+    return (
+      <div>
+        <input
+          type="text"
+          ref={this.textInput}
+        />
+        <input type="number" />
+        <p
+          ref={this.paragraphTextContent}
+        >Here we will add exclamtion mark
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        <button onClick={this.focusTextInput}>Ustaw focus na input</button>
+        <button onClick={this.handleParagraph}>Add exclamation mark</button>
+        <button onClick={this.toggleVisibilityCounter}>Pokaz/Ukryj Counter</button>
+        {counterElement}
+      </div>
+    );
+  }
+
+  focusTextInput = () => this.textInput.current.focus();
+  handleParagraph = () => this.paragraphTextContent.current.textContent += '!';
+  toggleVisibilityCounter = () => this.setState(prevState => ({
+    isCounterVisible: !prevState.isCounterVisible,
+  }));
+
 }
 
 export default App;
+
+
